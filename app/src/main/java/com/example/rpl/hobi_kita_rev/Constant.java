@@ -10,6 +10,9 @@ import com.google.firebase.storage.StorageReference;
 public class Constant {
     //Firebase Database
     public final static FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public final static DatabaseReference refEvent = database.getReference("event");
+    public final static DatabaseReference refKompetisi = database.getReference("kompetisi");
+    public final static DatabaseReference refSewa = database.getReference("sewa");
     public final static DatabaseReference refPhoto = database.getReference("photo");
 
     //Firebase Auth

@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         //Mengatur tab dan fragment pada tab menggunakan fragmentstatepageritemadapter dari library SmartTabLayout
         FragmentStatePagerItemAdapter adapter = new FragmentStatePagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add(FragmentPagerItem.of("New", FragmentFoto.class, FragmentFoto.arguments("new")))
+                .add(FragmentPagerItem.of("Event", FragmentFoto.class, FragmentFoto.arguments("Event")))
+                .add(FragmentPagerItem.of("Kompetisi", FragmentFoto.class, FragmentFoto.arguments("Kompetisi")))
+                .add(FragmentPagerItem.of("Sewa", FragmentFoto.class, FragmentFoto.arguments("Sewa")))
                 .add(FragmentPagerItem.of("My Photo", FragmentFoto.class, FragmentFoto.arguments("myphoto")))
                 .create());
 

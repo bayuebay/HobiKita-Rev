@@ -11,10 +11,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+
 
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.features.ReturnMode;
@@ -49,6 +56,15 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
     private StorageReference refPhotoProfile;
     private Uri photoUrl;
     private ProgressDialog pbDialog;
+    private String kondisi;
+    private Spinner spin;
+    private String[] kategori = new String[]{
+            "Pilih Kategori",
+            "Event",
+            "Kompetisi",
+            "Sewa"
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +74,40 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
         btnChoose.setOnClickListener(this);
         btnPost.setOnClickListener(this);
         pbDialog = new ProgressDialog(this);
+
+        spin = (Spinner) findViewById(R.id.spin);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, kategori);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                kondisi = String.valueOf(parent.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spin.setAdapter(adapter);
     }
+
+
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        kondisi = String.valueOf(parent.getSelectedItem());
+//    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
 
     //method handling onClickListener
     @Override
@@ -101,10 +150,25 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
                 pbDialog.show();
 
                 //melakukan proses update foto
-                refPhotoProfile = Constant.storageRef.child("gambar/" + System.currentTimeMillis() + ".jpg"); //akses path dan filename storage di firebase untuk menyimpan gambar
-                StorageReference photoImagesRef = Constant.storageRef.child("gambar/" + System.currentTimeMillis() + ".jpg");
-                refPhotoProfile.getName().equals(photoImagesRef.getName());
-                refPhotoProfile.getPath().equals(photoImagesRef.getPath());
+                if (kondisi.equals("Event")) {
+                    refPhotoProfile = Constant.storageRef.child("gambar/Event/" + System.currentTimeMillis() + ".jpg"); //akses path dan filename storage di firebase untuk menyimpan gambar
+                    StorageReference photoImagesRef = Constant.storageRef.child("gambar/Event/" + System.currentTimeMillis() + ".jpg");
+                    refPhotoProfile.getName().equals(photoImagesRef.getName());
+                    refPhotoProfile.getPath().equals(photoImagesRef.getPath());
+                } else if (kondisi.equals("Kompetisi")) {
+                    refPhotoProfile = Constant.storageRef.child("gambar/Kompetisi/" + System.currentTimeMillis() + ".jpg"); //akses path dan filename storage di firebase untuk menyimpan gambar
+                    StorageReference photoImagesRef = Constant.storageRef.child("gambar/Kompetisi/" + System.currentTimeMillis() + ".jpg");
+                    refPhotoProfile.getName().equals(photoImagesRef.getName());
+                    refPhotoProfile.getPath().equals(photoImagesRef.getPath());
+                } else if (kondisi.equals("Sewa")) {
+                    refPhotoProfile = Constant.storageRef.child("gambar/Sewa" + System.currentTimeMillis() + ".jpg"); //akses path dan filename storage di firebase untuk menyimpan gambar
+                    StorageReference photoImagesRef = Constant.storageRef.child("gambar/Sewa/" + System.currentTimeMillis() + ".jpg");
+                    refPhotoProfile.getName().equals(photoImagesRef.getName());
+                    refPhotoProfile.getPath().equals(photoImagesRef.getPath());
+                } else {
+                    Toast.makeText(this, "Pilih Kategori", Toast.LENGTH_SHORT).show();
+
+                }
 
                 //mengambil gambar dari imageview yang sudah di set menjadi selected image sebelumnya
                 imgPhoto.setDrawingCacheEnabled(true);
@@ -123,7 +187,57 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        if (kondisi.equals("Event")) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                            photoUrl = taskSnapshot.getDownloadUrl(); //setelah selesai upload, ambil url gambar
+                            String key = Constant.refEvent.push().getKey(); //ambil key dari node firebase
 
+                            //push atau insert data ke firebase database
+                            Constant.refEvent.child(key).setValue(new FotoModel(
+                                    key,
+                                    photoUrl.toString(),
+                                    tvTitle.getText().toString(),
+                                    tvPost.getText().toString(),
+                                    Constant.currentUser.getEmail().split("@")[0],
+                                    Constant.currentUser.getEmail()));
+                            pbDialog.dismiss();
+                            Toast.makeText(Tambah_Foto.this, "Uploaded!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else if (kondisi.equals("Kompetisi")) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                            photoUrl = taskSnapshot.getDownloadUrl(); //setelah selesai upload, ambil url gambar
+                            String key = Constant.refKompetisi.push().getKey(); //ambil key dari node firebase
+
+                            //push atau insert data ke firebase database
+                            Constant.refKompetisi.child(key).setValue(new FotoModel(
+                                    key,
+                                    photoUrl.toString(),
+                                    tvTitle.getText().toString(),
+                                    tvPost.getText().toString(),
+                                    Constant.currentUser.getEmail().split("@")[0],
+                                    Constant.currentUser.getEmail()));
+                            pbDialog.dismiss();
+                            Toast.makeText(Tambah_Foto.this, "Uploaded!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else if (kondisi.equals("Sewa")) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                            photoUrl = taskSnapshot.getDownloadUrl(); //setelah selesai upload, ambil url gambar
+                            String key = Constant.refSewa.push().getKey(); //ambil key dari node firebase
+
+                            //push atau insert data ke firebase database
+                            Constant.refSewa.child(key).setValue(new FotoModel(
+                                    key,
+                                    photoUrl.toString(),
+                                    tvTitle.getText().toString(),
+                                    tvPost.getText().toString(),
+                                    Constant.currentUser.getEmail().split("@")[0],
+                                    Constant.currentUser.getEmail()));
+                            pbDialog.dismiss();
+                            Toast.makeText(Tambah_Foto.this, "Uploaded!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+
+                        }
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                         photoUrl = taskSnapshot.getDownloadUrl(); //setelah selesai upload, ambil url gambar
                         String key = Constant.refPhoto.push().getKey(); //ambil key dari node firebase
@@ -162,4 +276,6 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 }
