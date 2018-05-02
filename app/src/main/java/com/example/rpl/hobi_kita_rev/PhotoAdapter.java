@@ -32,7 +32,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
 
     //class viewholder untuk declare dan inisialisasi views pada row yang digunakan
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvName, tvDesc, tvTitle, tvComment;
+        public TextView tvName, tvDesc, tvTitle, tvComment, tvLoc;
         public ImageView imgPhoto;
         public CardView cvPhoto;
 
@@ -40,8 +40,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
             super(view);
             imgPhoto = (ImageView) view.findViewById(R.id.imgPhoto);
             tvName = (TextView) view.findViewById(R.id.tvNama);
-            tvDesc = (TextView) view.findViewById(R.id.tvDeskripsi);
+            //tvDesc = (TextView) view.findViewById(R.id.tvDeskripsi);
             tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+            tvLoc = (TextView) view.findViewById(R.id.tvLocation);
             tvComment = (TextView) view.findViewById(R.id.tvComment);
             cvPhoto = (CardView) view.findViewById(R.id.cvPhoto);
         }
@@ -68,7 +69,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final FotoModel photo = photoList.get(position);
-        holder.tvDesc.setText(photo.getDesc());
+        //  holder.tvDesc.setText(photo.getDesc());
+        holder.tvLoc.setText(photo.getLoc());
         holder.tvName.setText(photo.getName());
         holder.tvTitle.setText(photo.getTitle());
 

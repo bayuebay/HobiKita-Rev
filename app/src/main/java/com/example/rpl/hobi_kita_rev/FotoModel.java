@@ -11,19 +11,21 @@ public class FotoModel implements Serializable {
     public String desc;
     public String name;
     public String email;
+    public String loc;
 
     //konstruktor kosong *diperlukan oleh firebase
     public FotoModel() {
     }
 
     //konstruktor
-    public FotoModel(String key, String image_url, String title, String desc, String name, String email) {
+    public FotoModel(String key, String image_url, String title, String loc, String name, String email, String desc) {
         this.key = key;
         this.image_url = image_url;
         this.title = title;
         this.desc = desc;
         this.name = name;
         this.email = email;
+        this.loc = loc;
     }
 
     //getter setter semua variable
@@ -73,5 +75,13 @@ public class FotoModel implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLoc() {
+        return loc;
+    }
+
+    public void setLoc(String loc) {
+        this.loc = loc;
     }
 }

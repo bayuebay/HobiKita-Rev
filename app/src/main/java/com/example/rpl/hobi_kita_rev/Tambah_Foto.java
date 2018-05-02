@@ -53,6 +53,8 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
             ImageView imgPhoto;
     @BindView(R.id.btnChoose) //@BindView declare sekaligus inisialisasi view dengan menggunakan library ButterKnife
             Button btnChoose;
+    @BindView(R.id.tvLoc)
+    TextInputEditText tvLoc;
     private StorageReference refPhotoProfile;
     private Uri photoUrl;
     private ProgressDialog pbDialog;
@@ -131,12 +133,16 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
             case R.id.btnPost:
                 //validasi kosong
                 if(tvTitle.getText().toString().isEmpty()) {
-                    tvTitle.setError("Required");
+                    tvTitle.setError("Harus diisi");
                     return;
                 }
                 //validasi kosong
                 if(tvPost.getText().toString().isEmpty()) {
-                    tvPost.setError("Required");
+                    tvPost.setError("harus diisi");
+                    return;
+                }
+                if (tvLoc.getText().toString().isEmpty()) {
+                    tvLoc.setError("harus diisi");
                     return;
                 }
                 //validasi gambar sudah dipilih
@@ -199,7 +205,9 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
                                     tvTitle.getText().toString(),
                                     tvPost.getText().toString(),
                                     Constant.currentUser.getEmail().split("@")[0],
-                                    Constant.currentUser.getEmail()));
+                                    Constant.currentUser.getEmail(),
+                                    tvLoc.getText().toString()
+                            ));
                             pbDialog.dismiss();
                             Toast.makeText(Tambah_Foto.this, "Uploaded!", Toast.LENGTH_SHORT).show();
                             finish();
@@ -215,7 +223,8 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
                                     tvTitle.getText().toString(),
                                     tvPost.getText().toString(),
                                     Constant.currentUser.getEmail().split("@")[0],
-                                    Constant.currentUser.getEmail()));
+                                    Constant.currentUser.getEmail(),
+                                    tvLoc.getText().toString()));
                             pbDialog.dismiss();
                             Toast.makeText(Tambah_Foto.this, "Uploaded!", Toast.LENGTH_SHORT).show();
                             finish();
@@ -231,7 +240,8 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
                                     tvTitle.getText().toString(),
                                     tvPost.getText().toString(),
                                     Constant.currentUser.getEmail().split("@")[0],
-                                    Constant.currentUser.getEmail()));
+                                    Constant.currentUser.getEmail(),
+                                    tvLoc.getText().toString()));
                             pbDialog.dismiss();
                             Toast.makeText(Tambah_Foto.this, "Uploaded!", Toast.LENGTH_SHORT).show();
                             finish();
@@ -249,7 +259,8 @@ public class Tambah_Foto extends AppCompatActivity implements View.OnClickListen
                                 tvTitle.getText().toString(),
                                 tvPost.getText().toString(),
                                 Constant.currentUser.getEmail().split("@")[0],
-                                Constant.currentUser.getEmail()));
+                                Constant.currentUser.getEmail(),
+                                tvLoc.getText().toString()));
                         pbDialog.dismiss();
                         Toast.makeText(Tambah_Foto.this, "Uploaded!", Toast.LENGTH_SHORT).show();
                         finish();
