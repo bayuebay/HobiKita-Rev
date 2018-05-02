@@ -34,8 +34,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_black_24dp"
-                    android:tint="#ffd000"/>
+                    android:src="@drawable/ic_comment_black_24dp"
+                    android:tint="#000000" />
                 <TextView
                     android:id="@+id/tvComment"
                     android:layout_width="wrap_content"
