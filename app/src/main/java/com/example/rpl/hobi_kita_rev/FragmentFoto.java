@@ -130,7 +130,7 @@ public class FragmentFoto extends Fragment {
                     //showProgress(false);
                 }
             });
-        }else if(menu.equals("sewa")) { //semua foto berdasarkan yang terbaru
+        } else if (menu.equals("sewa")) { //semua foto berdasarkan yang terbaru
             swipeRefresh.setRefreshing(true);
             Constant.refSewa.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -167,11 +167,12 @@ public class FragmentFoto extends Fragment {
                     for (final DataSnapshot ds : dataSnapshot.getChildren()) {
                         FotoModel photo = ds.getValue(FotoModel.class);
 
-                        if(photo.getEmail().equals(Constant.currentUser.getEmail())) {
+   /*                     if(photo.getEmail().equals(Constant.currentUser.getEmail())) {
                             photoList.add(photo); //dimasukkan list photo
                             mAdapter.notifyDataSetChanged(); //refresh adapter
                         }
                         swipeRefresh.setRefreshing(false);
+   */
                     }
                 }
 
